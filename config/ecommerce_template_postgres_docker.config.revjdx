@@ -1,0 +1,130 @@
+REM
+REM JDX (version: 05.05) reverse engineered config file
+REM JDX is a product of Software Tree, LLC.
+REM Date: Mon Oct 27 19:55:25 IST 2025
+REM
+
+JDX_DATABASE JDX:jdbc:postgresql://host.docker.internal:5432/ecommerce;USER=postgres;PASSWORD=TsPs@$$#487;JDX_DBTYPE=POSTGRES;DEBUG_LEVEL=5
+JDBC_DRIVER org.postgresql.Driver
+JDX_OBJECT_MODEL_PACKAGE com.acme.ecommerce.model
+JDX_SUPERCLASS_NAME com.softwaretree.jdx.JDX_JSONObject
+JDX_GENERATE_ACCESSOR_METHODS FALSE
+JDX_GENERATE_JSON_MAPPINGS TRUE
+;
+COLLECTION_CLASS .ListCustomerOrder COLLECTION_TYPE ARRAY ELEMENT_CLASS .CustomerOrder ELEMENT_TABLE customerorder
+    PRIMARY_KEY customerid 
+;
+CLASS .CustomerOrder TABLE customerorder
+    VIRTUAL_ATTRIB shippingaddressid ATTRIB_TYPE java.lang.Integer
+    VIRTUAL_ATTRIB orderdate ATTRIB_TYPE java.sql.Timestamp
+    VIRTUAL_ATTRIB id ATTRIB_TYPE int
+    VIRTUAL_ATTRIB ordernumber ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB shippeddate ATTRIB_TYPE java.sql.Timestamp
+    VIRTUAL_ATTRIB status ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB customerid ATTRIB_TYPE int
+    VIRTUAL_ATTRIB delivereddate ATTRIB_TYPE java.sql.Timestamp
+    VIRTUAL_ATTRIB totalamount ATTRIB_TYPE java.math.BigDecimal
+    VIRTUAL_ATTRIB trackingnumber ATTRIB_TYPE java.lang.String
+    PRIMARY_KEY id 
+    RELATIONSHIP listOrderItem REFERENCES .ListOrderItem2 BYVALUE WITH id 
+    SQLMAP FOR shippingaddressid NULLABLE
+    SQLMAP FOR shippeddate NULLABLE
+    SQLMAP FOR delivereddate NULLABLE
+    SQLMAP FOR trackingnumber NULLABLE
+;
+CLASS .OrderItem TABLE orderitem
+    VIRTUAL_ATTRIB subtotal ATTRIB_TYPE java.math.BigDecimal
+    VIRTUAL_ATTRIB unitprice ATTRIB_TYPE java.math.BigDecimal
+    VIRTUAL_ATTRIB productid ATTRIB_TYPE int
+    VIRTUAL_ATTRIB quantity ATTRIB_TYPE int
+    VIRTUAL_ATTRIB orderid ATTRIB_TYPE int
+    VIRTUAL_ATTRIB id ATTRIB_TYPE int
+    VIRTUAL_ATTRIB discount ATTRIB_TYPE java.math.BigDecimal
+    PRIMARY_KEY id 
+    SQLMAP FOR discount NULLABLE
+;
+CLASS .Customer TABLE customer
+    VIRTUAL_ATTRIB id ATTRIB_TYPE int
+    VIRTUAL_ATTRIB lastorderdate ATTRIB_TYPE java.util.Date
+    VIRTUAL_ATTRIB tier ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB firstname ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB lastname ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB email ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB phonenumber ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB registrationdate ATTRIB_TYPE java.util.Date
+    VIRTUAL_ATTRIB isactive ATTRIB_TYPE boolean
+    VIRTUAL_ATTRIB totalspent ATTRIB_TYPE java.math.BigDecimal
+    PRIMARY_KEY id 
+    RELATIONSHIP listCustomerOrder REFERENCES .ListCustomerOrder BYVALUE WITH id 
+    RELATIONSHIP listAddress REFERENCES .ListAddress BYVALUE WITH id 
+    SQLMAP FOR lastorderdate NULLABLE
+    SQLMAP FOR tier NULLABLE
+    SQLMAP FOR phonenumber NULLABLE
+    SQLMAP FOR isactive NULLABLE
+    SQLMAP FOR totalspent NULLABLE
+;
+COLLECTION_CLASS .ListOrderItem COLLECTION_TYPE ARRAY ELEMENT_CLASS .OrderItem ELEMENT_TABLE orderitem
+    PRIMARY_KEY productid 
+;
+COLLECTION_CLASS .ListOrderItem2 COLLECTION_TYPE ARRAY ELEMENT_CLASS .OrderItem ELEMENT_TABLE orderitem
+    PRIMARY_KEY orderid 
+;
+CLASS .Address TABLE address
+    VIRTUAL_ATTRIB state ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB id ATTRIB_TYPE int
+    VIRTUAL_ATTRIB street ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB country ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB addresstype ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB city ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB isdefault ATTRIB_TYPE boolean
+    VIRTUAL_ATTRIB zipcode ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB customerid ATTRIB_TYPE int
+    PRIMARY_KEY id 
+    SQLMAP FOR state NULLABLE
+    SQLMAP FOR addresstype NULLABLE
+    SQLMAP FOR isdefault NULLABLE
+    SQLMAP FOR zipcode NULLABLE
+;
+CLASS .Product TABLE product
+    VIRTUAL_ATTRIB supplierid ATTRIB_TYPE java.lang.Integer
+    VIRTUAL_ATTRIB name ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB id ATTRIB_TYPE int
+    VIRTUAL_ATTRIB category ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB price ATTRIB_TYPE java.math.BigDecimal
+    VIRTUAL_ATTRIB createddate ATTRIB_TYPE java.sql.Timestamp
+    VIRTUAL_ATTRIB sku ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB stockquantity ATTRIB_TYPE java.lang.Integer
+    VIRTUAL_ATTRIB description ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB isactive ATTRIB_TYPE boolean
+    VIRTUAL_ATTRIB lastupdated ATTRIB_TYPE java.sql.Timestamp
+    PRIMARY_KEY id 
+    RELATIONSHIP listOrderItem REFERENCES .ListOrderItem BYVALUE WITH id 
+    SQLMAP FOR supplierid NULLABLE
+    SQLMAP FOR createddate NULLABLE
+    SQLMAP FOR stockquantity NULLABLE
+    SQLMAP FOR description NULLABLE
+    SQLMAP FOR isactive NULLABLE
+    SQLMAP FOR lastupdated NULLABLE
+;
+COLLECTION_CLASS .ListAddress COLLECTION_TYPE ARRAY ELEMENT_CLASS .Address ELEMENT_TABLE address
+    PRIMARY_KEY customerid 
+;
+COLLECTION_CLASS .ListProduct COLLECTION_TYPE ARRAY ELEMENT_CLASS .Product ELEMENT_TABLE product
+    PRIMARY_KEY supplierid 
+;
+CLASS .Supplier TABLE supplier
+    VIRTUAL_ATTRIB name ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB createddate ATTRIB_TYPE java.sql.Timestamp
+    VIRTUAL_ATTRIB rating ATTRIB_TYPE java.math.BigDecimal
+    VIRTUAL_ATTRIB contactemail ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB isactive ATTRIB_TYPE boolean
+    VIRTUAL_ATTRIB country ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB id ATTRIB_TYPE int
+    PRIMARY_KEY id 
+    RELATIONSHIP listProduct REFERENCES .ListProduct BYVALUE WITH id 
+    SQLMAP FOR createddate NULLABLE
+    SQLMAP FOR rating NULLABLE
+    SQLMAP FOR contactemail NULLABLE
+    SQLMAP FOR isactive NULLABLE
+    SQLMAP FOR country NULLABLE
+;

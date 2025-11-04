@@ -1,0 +1,2 @@
+Error: Could not find or load main class com.softwaretree.jdxtools.JDXSchema
+Caused by: java.lang.ClassNotFoundException: com.softwaretree.jdxtools.JDXSchema

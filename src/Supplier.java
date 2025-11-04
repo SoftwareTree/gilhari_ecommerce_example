@@ -1,0 +1,25 @@
+// 
+// JDX (version: 05.05) reverse engineered class
+// JDX is a product of Software Tree, LLC.
+// 
+// DBURL=jdbc:postgresql://127.0.0.1:5432/ecommerce, Database=PostgreSQL, Version: 14.18 (Homebrew)
+// Date: Mon Oct 27 19:55:25 IST 2025
+// 
+package com.acme.ecommerce.model;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.softwaretree.jdx.JDX_JSONObject;
+
+public class Supplier extends JDX_JSONObject {
+    public  Product[]  listProduct;
+
+    public Supplier() {
+        super();
+    }
+
+    public Supplier(JSONObject jsonObject) throws JSONException {
+        super(jsonObject);
+    }
+}

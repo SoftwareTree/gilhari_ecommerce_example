@@ -1,0 +1,12 @@
+JDXSchema (Version: 05.05) (c)1997-2025 Software Tree, LLC. All rights reserved
+License key: WPN05.0cPJDXEd206O485zevRloR9Tu7znRskRgNJDXi7LYI3ObBZ5nGI113
+WARNING !! Do you want to overwrite file ecommerce_template_postgres.config.revjdx ? Yes|No|AlwaysYes|Cancel <Y|N|A|C>
+ Mon Oct 27 20:01:40 IST 2025: Exception: 
+java.lang.NullPointerException: Cannot invoke "String.equalsIgnoreCase(String)" because "<local1>" is null
+	at com.softwaretree.jdxtools.FRDialog.okToWrite(SourceFile:78)
+	at com.softwaretree.jdxtools.JDXGen.generateConfigFile(SourceFile:620)
+	at com.softwaretree.jdxtools.JDXGen.reverseEngg(SourceFile:609)
+	at com.softwaretree.jdxtools.JDXSchemaMapper.execute2(SourceFile:172)
+	at com.softwaretree.jdxtools.JDXSchemaMapper.executeSchemaOptions(SourceFile:161)
+	at com.softwaretree.jdxtools.JDXSchemaMapper.execute(SourceFile:152)
+	at com.softwaretree.jdxtools.JDXSchema.main(SourceFile:1171)
