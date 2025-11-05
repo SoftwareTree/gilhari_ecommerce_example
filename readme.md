@@ -69,11 +69,23 @@ gilhari_ecommerce/
 - **PostgreSQL** running on localhost:5432
 - **Database**: `ecommerce` with proper schema
 - **Credentials**: `postgres` / `<password>`
+- **Java Development Kit (JDK)** 8 or higher
+- **Gilhari SDK** installed and accessible
+
+**Windows Users:** Before running any scripts, edit `setEnvironment.cmd` and update the `JX_HOME` variable to point to your Gilhari SDK installation path.
 
 ### One-Command Build (Recommended)
+
+**macOS/Linux/Unix:**
 ```bash
 cd gilhari_ecommerce
 ./build_all.sh
+```
+
+**Windows:**
+```cmd
+cd gilhari_ecommerce
+build_all.cmd
 ```
 
 This single command handles:
@@ -84,6 +96,8 @@ This single command handles:
 - ✅ Service testing
 
 ### Manual Steps (If Needed)
+
+**macOS/Linux/Unix:**
 ```bash
 # 1. Smart reverse engineering
 ./smart_reverse_engineer.sh
@@ -95,6 +109,21 @@ This single command handles:
 docker build -t gilhari_ecommerce:1.0 .
 
 # 4. Run container
+docker run -d --name gilhari_ecommerce_container -p 8081:8081 gilhari_ecommerce:1.0
+```
+
+**Windows:**
+```cmd
+REM 1. Smart reverse engineering
+smart_reverse_engineer.cmd
+
+REM 2. Compile Java classes
+compile.cmd
+
+REM 3. Build Docker image
+docker build -t gilhari_ecommerce:1.0 .
+
+REM 4. Run container
 docker run -d --name gilhari_ecommerce_container -p 8081:8081 gilhari_ecommerce:1.0
 ```
 
@@ -120,10 +149,20 @@ JDX_DATABASE JDX:jdbc:postgresql://host.docker.internal:5432/ecommerce
 - `ecommerce_template_postgres_docker.config.revjdx` - Generated Docker ORM spec
 
 ### Smart Scripts
+
+**macOS/Linux/Unix:**
 - `smart_reverse_engineer.sh` - Handles environment detection and creates both configs
 - `build_all.sh` - Complete automated build pipeline
 - `reverse_engineer.sh` - Environment-aware reverse engineering
 - `compile.sh` - Java compilation with proper classpath
+- `setEnvironment.sh` - Environment setup script
+
+**Windows:**
+- `smart_reverse_engineer.cmd` - Handles environment detection and creates both configs
+- `build_all.cmd` - Complete automated build pipeline
+- `reverse_engineer.cmd` - Environment-aware reverse engineering
+- `compile.cmd` - Java compilation with proper classpath
+- `setEnvironment.cmd` - Environment setup script (update `JX_HOME` path in file)
 
 ## 🌐 Service Endpoints
 
@@ -275,6 +314,8 @@ The microservice works with these PostgreSQL tables:
 ## 🛠️ Development Tools
 
 ### Environment Setup
+
+**macOS/Linux/Unix:**
 ```bash
 # Set up environment variables
 source setEnvironment.sh
@@ -283,7 +324,19 @@ source setEnvironment.sh
 psql -h localhost -p 5432 -U postgres -d ecommerce -c "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';"
 ```
 
+**Windows:**
+```cmd
+REM Set up environment variables
+REM Note: Edit setEnvironment.cmd to set your JX_HOME path first
+call setEnvironment.cmd
+
+REM Verify PostgreSQL connection
+psql -h localhost -p 5432 -U postgres -d ecommerce -c "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';"
+```
+
 ### Build Process
+
+**macOS/Linux/Unix:**
 ```bash
 # Complete rebuild
 ./build_all.sh
@@ -292,6 +345,17 @@ psql -h localhost -p 5432 -U postgres -d ecommerce -c "SELECT table_name FROM in
 ./smart_reverse_engineer.sh  # Auto-detects environment
 ./compile.sh                  # Compiles Java classes
 docker build -t gilhari_ecommerce:1.0 .  # Builds image
+```
+
+**Windows:**
+```cmd
+REM Complete rebuild
+build_all.cmd
+
+REM Individual steps
+smart_reverse_engineer.cmd  REM Auto-detects environment
+compile.cmd                  REM Compiles Java classes
+docker build -t gilhari_ecommerce:1.0 .  REM Builds image
 ```
 
 ### Testing
@@ -334,6 +398,8 @@ curl -i https://1a81a816d1d4.ngrok-free.app/mcp
 - **Check**: `getObjectModelSummary` endpoint
 
 ### Debug Commands
+
+**macOS/Linux/Unix:**
 ```bash
 # Check container status
 docker ps | grep gilhari_ecommerce
@@ -349,6 +415,24 @@ curl -i http://localhost:8081/gilhari/v1/getObjectModelSummary/now
 
 # Enable SQL debugging (add to config file)
 echo "JDX_DEBUG_LEVEL 3" >> config/ecommerce_template_postgres.config
+```
+
+**Windows:**
+```cmd
+REM Check container status
+docker ps | findstr gilhari_ecommerce
+
+REM View container logs
+docker logs gilhari_ecommerce_container
+
+REM Test database connection
+psql -h localhost -p 5432 -U postgres -d ecommerce -c "SELECT 1;"
+
+REM Test microservice endpoint
+curl -i http://localhost:8081/gilhari/v1/getObjectModelSummary/now
+
+REM Enable SQL debugging (add to config file)
+echo JDX_DEBUG_LEVEL 3 >> config\ecommerce_template_postgres.config
 ```
 
 ### SQL Statement Monitoring
