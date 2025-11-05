@@ -49,15 +49,17 @@ gilhari_ecommerce/
 │   ├── classnames_map_ecommerce.js        # Class name mappings
 │   └── postgresql-42.7.8.jar             # PostgreSQL JDBC driver
 ├── bin/                                    # Compiled .class files
-├── logs/                                   # Build and runtime logs
+├── logs/                                   # Build and runtime logs (gitignored)
 ├── Dockerfile                             # Docker image definition
 ├── gilhari_service.config                 # Service configuration
-├── setEnvironment.sh                      # Environment setup
-├── smart_reverse_engineer.sh             # Automated reverse engineering
-├── reverse_engineer.sh                    # Environment-aware reverse engineering
-├── compile.sh                             # Java compilation
-├── build_all.sh                           # Complete automated build
-└── README.md                              # This file
+├── setEnvironment.sh / setEnvironment.cmd  # Environment setup (Unix/Windows)
+├── smart_reverse_engineer.sh / .cmd       # Automated reverse engineering
+├── reverse_engineer.sh / .cmd             # Environment-aware reverse engineering
+├── compile.sh / compile.cmd               # Java compilation
+├── build_all.sh / build_all.cmd           # Complete automated build
+├── .gitignore                             # Git ignore rules
+├── README.md                              # This file
+└── REVERSE_ENGINEERING.md                 # Reverse engineering guide
 ```
 
 ## 🚀 Quick Start
