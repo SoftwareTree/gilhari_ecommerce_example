@@ -1,0 +1,23 @@
+# Logs
+logs/
+*.log
+
+# Compiled classes
+bin/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+.sources.list
+*.bak
+

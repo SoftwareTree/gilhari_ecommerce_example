@@ -1,3 +1,5 @@
+Copyright (c) 2025 Software Tree
+
 # Gilhari E-commerce Microservice
 
 > **Automated e-commerce microservice with PostgreSQL integration and Docker deployment**
@@ -64,7 +66,7 @@ gilhari_ecommerce/
 - **Docker** installed and running
 - **PostgreSQL** running on localhost:5432
 - **Database**: `ecommerce` with proper schema
-- **Credentials**: `postgres` / `TsPs@$$#487`
+- **Credentials**: `postgres` / `<password>`
 
 ### One-Command Build (Recommended)
 ```bash

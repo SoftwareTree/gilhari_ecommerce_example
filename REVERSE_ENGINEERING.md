@@ -1,3 +1,5 @@
+Copyright (c) 2025 Software Tree
+
 # Reverse Engineering with Gilhari SDK
 
 > **Transform existing relational databases into intuitive object-oriented models for LLM-powered applications**
@@ -207,7 +209,7 @@ The reverse engineering process creates several configuration files:
 ```properties
 JDX_DATABASE JDX:jdbc:postgresql://127.0.0.1:5432/ecommerce
 JDX_USER postgres
-JDX_PASSWORD TsPs@$$#487
+JDX_PASSWORD <password>
 ```
 
 #### 2. **ORM Specification** (`.revjdx` files)
@@ -316,13 +318,6 @@ DEBUG: Executing SQL: SELECT * FROM supplier WHERE id = ?
 DEBUG: Executing SQL: SELECT * FROM product WHERE supplierid = ?
 DEBUG: Executing SQL: SELECT * FROM orderitem WHERE productid = ?
 ```
-
-### Performance Monitoring
-The reverse engineering process also generates performance metrics:
-- Relationship inference accuracy
-- Query execution times
-- Memory usage patterns
-- Object creation overhead
 
 ## 🚀 Getting Started with Reverse Engineering
 
