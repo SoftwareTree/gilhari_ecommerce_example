@@ -10,6 +10,7 @@ JDX_OBJECT_MODEL_PACKAGE com.acme.ecommerce.model
 JDX_SUPERCLASS_NAME com.softwaretree.jdx.JDX_JSONObject
 JDX_GENERATE_ACCESSOR_METHODS FALSE
 JDX_GENERATE_JSON_MAPPINGS TRUE
+OBJECT_MODEL_OVERVIEW This object model describes an ecommerce operation with entities like products, suppliers, customers, addresses, customer orders, and order items. Suppliers provide products to the catalog, customers can have multiple addresses and place orders containing multiple order items. Each order item links a product to a customer order with pricing and quantity information.
 ;
 COLLECTION_CLASS .ListCustomerOrder COLLECTION_TYPE ARRAY ELEMENT_CLASS .CustomerOrder ELEMENT_TABLE customerorder
     PRIMARY_KEY customerid 
