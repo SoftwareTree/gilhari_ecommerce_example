@@ -21,3 +21,6 @@ Thumbs.db
 .sources.list
 *.bak
 
+# JDBC drivers (users should download from official sources)
+*.jar
+

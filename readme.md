@@ -47,7 +47,7 @@ gilhari_ecommerce/
 │   ├── ecommerce_template_postgres.config.revjdx      # Local ORM spec
 │   ├── ecommerce_template_postgres_docker.config.revjdx # Docker ORM spec
 │   ├── classnames_map_ecommerce.js        # Class name mappings
-│   └── postgresql-42.7.8.jar             # PostgreSQL JDBC driver
+│   └── postgresql-XX.X.X.jar             # PostgreSQL JDBC driver (download from official source)
 ├── bin/                                    # Compiled .class files
 ├── logs/                                   # Build and runtime logs (gitignored)
 ├── Dockerfile                             # Docker image definition
@@ -66,9 +66,15 @@ gilhari_ecommerce/
 
 ### Prerequisites
 - **Docker** installed and running
-- **PostgreSQL** running on localhost:5432
-- **Database**: `ecommerce` with proper schema
-- **Credentials**: `postgres` / `<password>`
+- **PostgreSQL Database**: A running PostgreSQL instance
+  - Database: `ecommerce` with proper schema
+  - Default connection: `localhost:5432`
+  - Credentials: `postgres` / `<password>`
+  - **PostgreSQL JDBC Driver**: Download the latest driver from official sources:
+    - [PostgreSQL JDBC Driver Downloads](https://jdbc.postgresql.org/download/)
+    - Or via Maven Central: [PostgreSQL JDBC on Maven](https://mvnrepository.com/artifact/org.postgresql/postgresql)
+  - Place the JDBC driver JAR file (e.g., `postgresql-XX.X.X.jar`) in the `config/` directory
+  - The driver is required for Gilhari to connect to your PostgreSQL database
 - **Java Development Kit (JDK)** 8 or higher
 - **Gilhari SDK** installed and accessible
 
@@ -388,10 +394,13 @@ curl -i https://1a81a816d1d4.ngrok-free.app/mcp
 **Problem**: Database connection errors
 - **Solution**: Verify PostgreSQL is running and accessible
 - **Check**: Database URL in configuration files
+- **Check**: Ensure PostgreSQL JDBC driver JAR file is present in `config/` directory
+  - Download from [PostgreSQL JDBC Downloads](https://jdbc.postgresql.org/download/) if missing
 
 **Problem**: Build fails
 - **Solution**: Ensure all prerequisites are installed
 - **Check**: Environment variables and file permissions
+- **Check**: PostgreSQL JDBC driver JAR file is in `config/` directory
 
 **Problem**: ORMCP Server cannot connect
 - **Solution**: Verify microservice is running and accessible
