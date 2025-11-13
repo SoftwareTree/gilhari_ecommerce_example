@@ -68,24 +68,72 @@ gilhari_ecommerce/
 
 ## 🚀 Quick Start
 
-### Prerequisites
+Follow these steps in order to get the e-commerce microservice up and running:
+
+### Step 1: Install Prerequisites
+
+Ensure you have the following installed:
+
 - **Docker** installed and running
 - **PostgreSQL Database**: A running PostgreSQL instance
-  - Database: `ecommerce` with proper schema
   - Default connection: `localhost:5432`
   - Credentials: `postgres` / `<password>`
-  - **PostgreSQL JDBC Driver**: Download the latest driver from official sources:
-    - [PostgreSQL JDBC Driver Downloads](https://jdbc.postgresql.org/download/)
-    - Or via Maven Central: [PostgreSQL JDBC on Maven](https://mvnrepository.com/artifact/org.postgresql/postgresql)
-  - Place the JDBC driver JAR file (e.g., `postgresql-XX.X.X.jar`) in the `config/` directory
-  - The driver is required for Gilhari to connect to your PostgreSQL database
-  - **Database Setup**: Run `./populate_database.sh` (or `populate_database.cmd` on Windows) to create the schema and populate sample data. See [Database Setup](#database-setup) section for details.
 - **Java Development Kit (JDK)** 8 or higher
 - **Gilhari SDK** installed and accessible
 
 **Windows Users:** Before running any scripts, edit `setEnvironment.cmd` and update the `JX_HOME` variable to point to your Gilhari SDK installation path.
 
-### One-Command Build (Recommended)
+### Step 2: Download PostgreSQL JDBC Driver
+
+Download the PostgreSQL JDBC driver from one of these sources:
+- [PostgreSQL JDBC Driver Downloads](https://jdbc.postgresql.org/download/)
+- [PostgreSQL JDBC on Maven Central](https://mvnrepository.com/artifact/org.postgresql/postgresql)
+
+**Place the JAR file** (e.g., `postgresql-42.7.8.jar`) in the `config/` directory.
+
+### Step 3: Set Up Database
+
+Create the database and populate it with schema and sample data:
+
+**macOS/Linux/Unix:**
+```bash
+# Create the database (if it doesn't exist)
+createdb -h localhost -p 5432 -U postgres ecommerce
+
+# Run the population script to create schema and sample data
+./populate_database.sh
+```
+
+**Windows:**
+```cmd
+REM Create the database (if it doesn't exist)
+createdb -h localhost -p 5432 -U postgres ecommerce
+
+REM Run the population script to create schema and sample data
+populate_database.cmd
+```
+
+**Custom Connection Parameters:**
+If your database uses different connection settings, set environment variables:
+```bash
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_NAME=ecommerce
+export DB_USER=postgres
+export DB_PASSWORD=your_password
+
+./populate_database.sh
+```
+
+This will:
+- ✅ Create all database tables (`supplier`, `product`, `customer`, `address`, `customerorder`, `orderitem`)
+- ✅ Set up foreign key relationships
+- ✅ Create indexes for optimal performance
+- ✅ Populate database with realistic sample data (4 suppliers, 8 products, 7 customers, 9 orders, etc.)
+
+### Step 4: Build and Deploy
+
+**Option A: One-Command Build (Recommended)**
 
 **macOS/Linux/Unix:**
 ```bash
@@ -100,13 +148,13 @@ build_all.cmd
 ```
 
 This single command handles:
-- ✅ Smart reverse engineering
+- ✅ Smart reverse engineering (analyzes database and generates Java classes)
 - ✅ Java compilation
 - ✅ Docker image build
 - ✅ Container deployment
 - ✅ Service testing
 
-### Manual Steps (If Needed)
+**Option B: Manual Steps**
 
 **macOS/Linux/Unix:**
 ```bash
@@ -137,6 +185,23 @@ docker build -t gilhari_ecommerce:1.0 .
 REM 4. Run container
 docker run -d --name gilhari_ecommerce_container -p 8081:8081 gilhari_ecommerce:1.0
 ```
+
+### Step 5: Verify Installation
+
+Test that the microservice is running:
+
+```bash
+# Check container status
+docker ps | grep gilhari_ecommerce
+
+# Test the microservice endpoint
+curl -i http://localhost:8081/gilhari/v1/getObjectModelSummary/now
+
+# View container logs if needed
+docker logs gilhari_ecommerce_container
+```
+
+**Success!** 🎉 Your microservice should now be running at `http://localhost:8081/gilhari/v1/`
 
 ## 🔧 How the Automation Works
 
@@ -319,7 +384,11 @@ The microservice works with these PostgreSQL tables:
 
 ### Database Setup
 
-#### Quick Setup (Recommended)
+> **Note:** This section provides detailed information about database setup. For a quick start, follow [Step 3: Set Up Database](#step-3-set-up-database) in the Quick Start guide above.
+
+#### Automated Setup (Recommended)
+
+The easiest way to set up the database is using the provided population scripts:
 
 **macOS/Linux/Unix:**
 ```bash
@@ -340,6 +409,8 @@ populate_database.cmd
 ```
 
 #### Manual Setup
+
+If you prefer to run the SQL files manually:
 
 1. **Create database**: 
    ```bash
