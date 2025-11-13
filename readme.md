@@ -48,6 +48,9 @@ gilhari_ecommerce/
 │   ├── ecommerce_template_postgres_docker.config.revjdx # Docker ORM spec
 │   ├── classnames_map_ecommerce.js        # Class name mappings
 │   └── postgresql-XX.X.X.jar             # PostgreSQL JDBC driver (download from official source)
+├── database/                               # Database setup files
+│   ├── schema.sql                          # PostgreSQL schema definition
+│   └── sample_data.sql                     # Sample data for testing
 ├── bin/                                    # Compiled .class files
 ├── logs/                                   # Build and runtime logs (gitignored)
 ├── Dockerfile                             # Docker image definition
@@ -57,6 +60,7 @@ gilhari_ecommerce/
 ├── reverse_engineer.sh / .cmd             # Environment-aware reverse engineering
 ├── compile.sh / compile.cmd               # Java compilation
 ├── build_all.sh / build_all.cmd           # Complete automated build
+├── populate_database.sh / .cmd             # Database setup and population scripts
 ├── .gitignore                             # Git ignore rules
 ├── README.md                              # This file
 └── REVERSE_ENGINEERING.md                 # Reverse engineering guide
@@ -75,6 +79,7 @@ gilhari_ecommerce/
     - Or via Maven Central: [PostgreSQL JDBC on Maven](https://mvnrepository.com/artifact/org.postgresql/postgresql)
   - Place the JDBC driver JAR file (e.g., `postgresql-XX.X.X.jar`) in the `config/` directory
   - The driver is required for Gilhari to connect to your PostgreSQL database
+  - **Database Setup**: Run `./populate_database.sh` (or `populate_database.cmd` on Windows) to create the schema and populate sample data. See [Database Setup](#database-setup) section for details.
 - **Java Development Kit (JDK)** 8 or higher
 - **Gilhari SDK** installed and accessible
 
@@ -313,9 +318,85 @@ The microservice works with these PostgreSQL tables:
 - `orderitem` - Order line items
 
 ### Database Setup
-1. **Create database**: `ecommerce`
-2. **Run schema**: Use provided SQL files
-3. **Verify connection**: `psql -h localhost -p 5432 -U postgres -d ecommerce`
+
+#### Quick Setup (Recommended)
+
+**macOS/Linux/Unix:**
+```bash
+# 1. Create the database (if it doesn't exist)
+createdb -h localhost -p 5432 -U postgres ecommerce
+
+# 2. Run the population script
+./populate_database.sh
+```
+
+**Windows:**
+```cmd
+REM 1. Create the database (if it doesn't exist)
+createdb -h localhost -p 5432 -U postgres ecommerce
+
+REM 2. Run the population script
+populate_database.cmd
+```
+
+#### Manual Setup
+
+1. **Create database**: 
+   ```bash
+   createdb -h localhost -p 5432 -U postgres ecommerce
+   ```
+
+2. **Run schema**: 
+   ```bash
+   psql -h localhost -p 5432 -U postgres -d ecommerce -f database/schema.sql
+   ```
+
+3. **Populate sample data**: 
+   ```bash
+   psql -h localhost -p 5432 -U postgres -d ecommerce -f database/sample_data.sql
+   ```
+
+4. **Verify connection**: 
+   ```bash
+   psql -h localhost -p 5432 -U postgres -d ecommerce
+   ```
+
+#### Database Population Scripts
+
+The repository includes automated scripts to set up and populate the database:
+
+- **`populate_database.sh`** (macOS/Linux/Unix) - Automated database setup script
+- **`populate_database.cmd`** (Windows) - Automated database setup script
+- **`database/schema.sql`** - PostgreSQL schema definition with all tables, indexes, and triggers
+- **`database/sample_data.sql`** - Sample data including suppliers, products, customers, addresses, orders, and order items
+
+**Script Features:**
+- ✅ Automatically creates all database tables
+- ✅ Sets up foreign key relationships
+- ✅ Creates indexes for optimal performance
+- ✅ Populates database with realistic sample data
+- ✅ Verifies data insertion
+- ✅ Compatible with the reverse-engineered ORM model
+
+**Custom Connection Parameters:**
+You can customize the database connection by setting environment variables:
+```bash
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_NAME=ecommerce
+export DB_USER=postgres
+export DB_PASSWORD=your_password
+
+./populate_database.sh
+```
+
+**Sample Data Includes:**
+- 4 Suppliers (TechSupply Inc, Global Electronics, Premium Goods Ltd, FastShip Distributors)
+- 8 Products (Laptops, Phones, Headphones, Watches, Tablets, Mice, Keyboards, Monitors)
+- 7 Customers (various tiers: Bronze, Silver, Gold, Platinum)
+- 7 Addresses (one per customer)
+- 9 Orders (various statuses: Pending, Processing, Shipped, Delivered)
+- 17 Order Items (demonstrating complex order relationships)
 
 ## 🛠️ Development Tools
 
