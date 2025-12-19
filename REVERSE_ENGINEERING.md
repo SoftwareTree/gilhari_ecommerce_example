@@ -63,29 +63,11 @@ Our e-commerce example uses a typical PostgreSQL schema with these tables:
 supplier.id → product.supplierid
 ```
 **Generated Java Structure:**
-```java
-// 
-// JDX (version: 05.05) reverse engineered class
-// JDX is a product of Software Tree, LLC.
-// 
-package com.acme.ecommerce.model;
+The `Supplier` class is generated with:
+- A relationship array field: `Product[] listProduct`
+- Default constructor and JSON-based constructor
+- Extends `JDX_JSONObject` for JSON serialization support
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.softwaretree.jdx.JDX_JSONObject;
-
-public class Supplier extends JDX_JSONObject {
-    public  Product[]  listProduct;
-
-    public Supplier() {
-        super();
-    }
-
-    public Supplier(JSONObject jsonObject) throws JSONException {
-        super(jsonObject);
-    }
-}
-```
 **What This Enables:**
 - The relationship array `listProduct` is generated in the Java class
 - At runtime, JDX automatically populates this array when you access it after loading a Supplier entity
@@ -98,30 +80,11 @@ public class Supplier extends JDX_JSONObject {
 customer.id → customerorder.customerid
 ```
 **Generated Java Structure:**
-```java
-// 
-// JDX (version: 05.05) reverse engineered class
-// JDX is a product of Software Tree, LLC.
-// 
-package com.acme.ecommerce.model;
+The `Customer` class is generated with:
+- Relationship array fields: `CustomerOrder[] listCustomerOrder` and `Address[] listAddress`
+- Default constructor and JSON-based constructor
+- Extends `JDX_JSONObject` for JSON serialization support
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.softwaretree.jdx.JDX_JSONObject;
-
-public class Customer extends JDX_JSONObject {
-    public  CustomerOrder[]  listCustomerOrder;
-    public  Address[]  listAddress;
-
-    public Customer() {
-        super();
-    }
-
-    public Customer(JSONObject jsonObject) throws JSONException {
-        super(jsonObject);
-    }
-}
-```
 **What This Enables:**
 - The relationship arrays `listCustomerOrder` and `listAddress` are generated in the Java class
 - At runtime, JDX automatically populates these arrays when you access them after loading a Customer entity
@@ -141,29 +104,11 @@ customer.id → address.customerid
 customerorder.id → orderitem.orderid
 ```
 **Generated Java Structure:**
-```java
-// 
-// JDX (version: 05.05) reverse engineered class
-// JDX is a product of Software Tree, LLC.
-// 
-package com.acme.ecommerce.model;
+The `CustomerOrder` class is generated with:
+- A relationship array field: `OrderItem[] listOrderItem`
+- Default constructor and JSON-based constructor
+- Extends `JDX_JSONObject` for JSON serialization support
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.softwaretree.jdx.JDX_JSONObject;
-
-public class CustomerOrder extends JDX_JSONObject {
-    public  OrderItem[]  listOrderItem;
-
-    public CustomerOrder() {
-        super();
-    }
-
-    public CustomerOrder(JSONObject jsonObject) throws JSONException {
-        super(jsonObject);
-    }
-}
-```
 **What This Enables:**
 - The relationship array `listOrderItem` is generated in the Java class
 - At runtime, JDX automatically populates this array when you access it after loading a CustomerOrder entity
@@ -176,29 +121,11 @@ public class CustomerOrder extends JDX_JSONObject {
 product.id → orderitem.productid
 ```
 **Generated Java Structure:**
-```java
-// 
-// JDX (version: 05.05) reverse engineered class
-// JDX is a product of Software Tree, LLC.
-// 
-package com.acme.ecommerce.model;
+The `Product` class is generated with:
+- A relationship array field: `OrderItem[] listOrderItem`
+- Default constructor and JSON-based constructor
+- Extends `JDX_JSONObject` for JSON serialization support
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.softwaretree.jdx.JDX_JSONObject;
-
-public class Product extends JDX_JSONObject {
-    public  OrderItem[]  listOrderItem;
-
-    public Product() {
-        super();
-    }
-
-    public Product(JSONObject jsonObject) throws JSONException {
-        super(jsonObject);
-    }
-}
-```
 **What This Enables:**
 - The relationship array `listOrderItem` is generated in the Java class
 - At runtime, JDX automatically populates this array when you access it after loading a Product entity
