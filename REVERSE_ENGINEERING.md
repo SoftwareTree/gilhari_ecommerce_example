@@ -40,10 +40,9 @@ The tool automatically infers relationships by analyzing:
 
 ### 3. Java Class Generation
 For each relationship, the tool generates:
-- **Entity Classes**: Main business objects
-- **Collection Classes**: `List*` classes for 1:Many relationships
-- **Navigation Methods**: Easy access to related objects
-- **JSON Support**: Built-in serialization/deserialization
+- **Entity Classes**: Main business objects with relationship arrays
+- **Constructors**: Default and JSON-based constructors
+- **JSON Support**: Built-in serialization/deserialization through `JDX_JSONObject`
 
 ## 📊 E-commerce Example: Relationship Analysis
 
@@ -66,15 +65,16 @@ supplier.id → product.supplierid
 **Generated Java Structure:**
 ```java
 public class Supplier extends JDX_JSONObject {
-    // ... supplier fields ...
-    public Product[] listProduct;  // Generated collection
-    public ListProduct listProductCollection;  // Navigation class
+    public Product[] listProduct;  // Generated relationship array
+    
+    public Supplier() { super(); }
+    public Supplier(JSONObject jsonObject) throws JSONException { super(jsonObject); }
 }
 ```
 **LLM Benefits:**
 - Natural language: "Show me all products from TechSupply Inc"
 - Object navigation: `supplier.listProduct[0].name`
-- No SQL required: `supplier.getProductsByCategory("Electronics")`
+- No SQL required: The ORM layer automatically handles relationship queries
 
 #### 2. **Customer → CustomerOrder (1:Many)**
 ```sql
@@ -84,33 +84,24 @@ customer.id → customerorder.customerid
 **Generated Java Structure:**
 ```java
 public class Customer extends JDX_JSONObject {
-    // ... customer fields ...
-    public CustomerOrder[] listCustomerOrder;  // Generated collection
-    public ListCustomerOrder listCustomerOrderCollection;  // Navigation class
+    public CustomerOrder[] listCustomerOrder;  // Generated relationship array
+    public Address[] listAddress;  // Generated relationship array
+    
+    public Customer() { super(); }
+    public Customer(JSONObject jsonObject) throws JSONException { super(jsonObject); }
 }
 ```
 **LLM Benefits:**
 - Natural language: "Find all orders for customer John Smith"
 - Object navigation: `customer.listCustomerOrder[0].totalAmount`
-- Business logic: `customer.getTotalSpent()`, `customer.getOrderHistory()`
+- The ORM layer automatically handles relationship queries without SQL
 
 #### 3. **Customer → Address (1:Many)**
 ```sql
 -- Database relationship
 customer.id → address.customerid
 ```
-**Generated Java Structure:**
-```java
-public class Customer extends JDX_JSONObject {
-    // ... customer fields ...
-    public Address[] listAddress;  // Generated collection
-    public ListAddress listAddressCollection;  // Navigation class
-}
-```
-**LLM Benefits:**
-- Natural language: "Get all addresses for customer ID 123"
-- Object navigation: `customer.listAddress[0].street`
-- Business logic: `customer.getShippingAddress()`, `customer.getBillingAddress()`
+**Note:** This relationship is included in the Customer class shown above (see `listAddress` field).
 
 #### 4. **CustomerOrder → OrderItem (1:Many)**
 ```sql
@@ -120,15 +111,16 @@ customerorder.id → orderitem.orderid
 **Generated Java Structure:**
 ```java
 public class CustomerOrder extends JDX_JSONObject {
-    // ... order fields ...
-    public OrderItem[] listOrderItem;  // Generated collection
-    public ListOrderItem2 listOrderItemCollection;  // Navigation class
+    public OrderItem[] listOrderItem;  // Generated relationship array
+    
+    public CustomerOrder() { super(); }
+    public CustomerOrder(JSONObject jsonObject) throws JSONException { super(jsonObject); }
 }
 ```
 **LLM Benefits:**
 - Natural language: "Show me all items in order #1001"
 - Object navigation: `order.listOrderItem[0].quantity`
-- Business logic: `order.getTotalItems()`, `order.getSubtotal()`
+- The ORM layer automatically handles relationship queries
 
 #### 5. **Product → OrderItem (1:Many)**
 ```sql
@@ -138,15 +130,16 @@ product.id → orderitem.productid
 **Generated Java Structure:**
 ```java
 public class Product extends JDX_JSONObject {
-    // ... product fields ...
-    public OrderItem[] listOrderItem;  // Generated collection
-    public ListOrderItem listOrderItemCollection;  // Navigation class
+    public OrderItem[] listOrderItem;  // Generated relationship array
+    
+    public Product() { super(); }
+    public Product(JSONObject jsonObject) throws JSONException { super(jsonObject); }
 }
 ```
 **LLM Benefits:**
 - Natural language: "Find all orders containing product LAPTOP-001"
 - Object navigation: `product.listOrderItem[0].orderId`
-- Business logic: `product.getTotalSold()`, `product.getRevenue()`
+- The ORM layer automatically handles relationship queries
 
 ## 🚀 LLM MCP Tool Integration
 
@@ -213,14 +206,21 @@ JDX_PASSWORD <password>
 ```
 
 #### 2. **ORM Specification** (`.revjdx` files)
-```xml
-<JDX_ORM_SPEC>
-  <ENTITY name="Supplier" table="supplier">
-    <FIELD name="id" column="id" type="INTEGER" primaryKey="true"/>
-    <FIELD name="name" column="name" type="VARCHAR"/>
-    <RELATIONSHIP name="listProduct" targetEntity="Product" type="1:Many"/>
-  </ENTITY>
-</JDX_ORM_SPEC>
+The reverse engineering process generates JDX configuration files (`.revjdx`) that define the object model structure. These files use JDX-specific syntax to map database tables to Java classes and define relationships:
+
+```properties
+CLASS .Supplier TABLE supplier
+    VIRTUAL_ATTRIB id ATTRIB_TYPE int
+    VIRTUAL_ATTRIB name ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB contactemail ATTRIB_TYPE java.lang.String
+    VIRTUAL_ATTRIB rating ATTRIB_TYPE java.math.BigDecimal
+    PRIMARY_KEY id 
+    RELATIONSHIP listProduct REFERENCES .ListProduct BYVALUE WITH id 
+;
+
+COLLECTION_CLASS .ListProduct COLLECTION_TYPE ARRAY ELEMENT_CLASS .Product ELEMENT_TABLE product
+    PRIMARY_KEY supplierid 
+;
 ```
 
 #### 3. **Class Name Mapping** (`classnames_map_ecommerce.js`)
@@ -238,41 +238,29 @@ JDX_PASSWORD <password>
 ### Generated Java Classes
 
 #### Entity Class Example
+The reverse engineering tool generates Java classes that extend `JDX_JSONObject` with relationship arrays and constructors:
+
 ```java
 package com.acme.ecommerce.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.softwaretree.jdx.JDX_JSONObject;
+
 public class Supplier extends JDX_JSONObject {
-    public Integer id;
-    public String name;
-    public String contactEmail;
-    public Double rating;
+    public Product[] listProduct;  // Generated relationship array
     
-    // Generated relationship fields
-    public Product[] listProduct;
-    public ListProduct listProductCollection;
+    public Supplier() {
+        super();
+    }
     
-    // Generated constructors
-    public Supplier() { super(); }
-    public Supplier(JSONObject json) { super(json); }
-    
-    // Generated navigation methods
-    public Product[] getListProduct() { return listProduct; }
-    public void setListProduct(Product[] listProduct) { this.listProduct = listProduct; }
+    public Supplier(JSONObject jsonObject) throws JSONException {
+        super(jsonObject);
+    }
 }
 ```
 
-#### Collection Class Example
-```java
-public class ListProduct extends JDX_JSONObject {
-    public Product[] items;
-    public Integer count;
-    
-    public Product[] getItems() { return items; }
-    public void setItems(Product[] items) { this.items = items; }
-    public Integer getCount() { return count; }
-    public void setCount(Integer count) { this.count = count; }
-}
-```
+**Note:** The actual field attributes (like `id`, `name`, `contactEmail`, `rating`) are defined in the `.revjdx` configuration file as `VIRTUAL_ATTRIB` entries. The JDX framework handles these attributes dynamically at runtime, so they don't appear as explicit fields in the generated Java class. The relationship arrays (like `listProduct`) are the primary generated code elements that enable object navigation.
 
 ## 🎯 Benefits for LLM Applications
 
@@ -335,9 +323,9 @@ Ensure your database has:
 
 ### 3. **Review Generated Classes**
 Check the `src/` directory for generated Java classes:
-- Entity classes for each table
-- Collection classes for relationships
-- Navigation methods for object access
+- Entity classes for each table with relationship arrays
+- Constructors for object instantiation
+- Relationship arrays enable object navigation without SQL
 
 ### 4. **Test with LLM**
 Use the `getObjectModelSummary` tool to verify the model structure:
