@@ -18,7 +18,7 @@ Large Language Models excel at understanding and manipulating object-oriented da
 ### The Gilhari Solution
 Reverse engineering bridges this gap by:
 - **Automatic Relationship Detection**: Infers foreign key relationships from database metadata
-- **Object-Oriented Mapping**: Creates intuitive Java classes with navigation methods
+- **Object-Oriented Mapping**: Creates intuitive Java classes with relationship arrays for object navigation
 - **LLM-Friendly Structure**: Generates models that LLMs can easily understand and manipulate
 - **Zero SQL Required**: Eliminates the need for complex SQL queries
 
@@ -64,17 +64,33 @@ supplier.id → product.supplierid
 ```
 **Generated Java Structure:**
 ```java
+// 
+// JDX (version: 05.05) reverse engineered class
+// JDX is a product of Software Tree, LLC.
+// 
+package com.acme.ecommerce.model;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.softwaretree.jdx.JDX_JSONObject;
+
 public class Supplier extends JDX_JSONObject {
-    public Product[] listProduct;  // Generated relationship array
-    
-    public Supplier() { super(); }
-    public Supplier(JSONObject jsonObject) throws JSONException { super(jsonObject); }
+    public  Product[]  listProduct;
+
+    public Supplier() {
+        super();
+    }
+
+    public Supplier(JSONObject jsonObject) throws JSONException {
+        super(jsonObject);
+    }
 }
 ```
-**LLM Benefits:**
-- Natural language: "Show me all products from TechSupply Inc"
-- Object navigation: `supplier.listProduct[0].name`
-- No SQL required: The ORM layer automatically handles relationship queries
+**What This Enables:**
+- The relationship array `listProduct` is generated in the Java class
+- At runtime, JDX automatically populates this array when you access it after loading a Supplier entity
+- Field attributes like `name` are defined as VIRTUAL_ATTRIB in the `.revjdx` file and accessed through JDX's dynamic attribute system
+- No SQL queries are required in your code - JDX handles the relationship queries automatically
 
 #### 2. **Customer → CustomerOrder (1:Many)**
 ```sql
@@ -83,18 +99,34 @@ customer.id → customerorder.customerid
 ```
 **Generated Java Structure:**
 ```java
+// 
+// JDX (version: 05.05) reverse engineered class
+// JDX is a product of Software Tree, LLC.
+// 
+package com.acme.ecommerce.model;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.softwaretree.jdx.JDX_JSONObject;
+
 public class Customer extends JDX_JSONObject {
-    public CustomerOrder[] listCustomerOrder;  // Generated relationship array
-    public Address[] listAddress;  // Generated relationship array
-    
-    public Customer() { super(); }
-    public Customer(JSONObject jsonObject) throws JSONException { super(jsonObject); }
+    public  CustomerOrder[]  listCustomerOrder;
+    public  Address[]  listAddress;
+
+    public Customer() {
+        super();
+    }
+
+    public Customer(JSONObject jsonObject) throws JSONException {
+        super(jsonObject);
+    }
 }
 ```
-**LLM Benefits:**
-- Natural language: "Find all orders for customer John Smith"
-- Object navigation: `customer.listCustomerOrder[0].totalAmount`
-- The ORM layer automatically handles relationship queries without SQL
+**What This Enables:**
+- The relationship arrays `listCustomerOrder` and `listAddress` are generated in the Java class
+- At runtime, JDX automatically populates these arrays when you access them after loading a Customer entity
+- Field attributes like `totalamount` are defined as VIRTUAL_ATTRIB in the `.revjdx` file and accessed through JDX's dynamic attribute system
+- JDX handles the relationship queries automatically without requiring SQL in your code
 
 #### 3. **Customer → Address (1:Many)**
 ```sql
@@ -110,17 +142,33 @@ customerorder.id → orderitem.orderid
 ```
 **Generated Java Structure:**
 ```java
+// 
+// JDX (version: 05.05) reverse engineered class
+// JDX is a product of Software Tree, LLC.
+// 
+package com.acme.ecommerce.model;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.softwaretree.jdx.JDX_JSONObject;
+
 public class CustomerOrder extends JDX_JSONObject {
-    public OrderItem[] listOrderItem;  // Generated relationship array
-    
-    public CustomerOrder() { super(); }
-    public CustomerOrder(JSONObject jsonObject) throws JSONException { super(jsonObject); }
+    public  OrderItem[]  listOrderItem;
+
+    public CustomerOrder() {
+        super();
+    }
+
+    public CustomerOrder(JSONObject jsonObject) throws JSONException {
+        super(jsonObject);
+    }
 }
 ```
-**LLM Benefits:**
-- Natural language: "Show me all items in order #1001"
-- Object navigation: `order.listOrderItem[0].quantity`
-- The ORM layer automatically handles relationship queries
+**What This Enables:**
+- The relationship array `listOrderItem` is generated in the Java class
+- At runtime, JDX automatically populates this array when you access it after loading a CustomerOrder entity
+- Field attributes like `quantity` are defined as VIRTUAL_ATTRIB in the `.revjdx` file and accessed through JDX's dynamic attribute system
+- JDX handles the relationship queries automatically
 
 #### 5. **Product → OrderItem (1:Many)**
 ```sql
@@ -129,47 +177,38 @@ product.id → orderitem.productid
 ```
 **Generated Java Structure:**
 ```java
+// 
+// JDX (version: 05.05) reverse engineered class
+// JDX is a product of Software Tree, LLC.
+// 
+package com.acme.ecommerce.model;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.softwaretree.jdx.JDX_JSONObject;
+
 public class Product extends JDX_JSONObject {
-    public OrderItem[] listOrderItem;  // Generated relationship array
-    
-    public Product() { super(); }
-    public Product(JSONObject jsonObject) throws JSONException { super(jsonObject); }
+    public  OrderItem[]  listOrderItem;
+
+    public Product() {
+        super();
+    }
+
+    public Product(JSONObject jsonObject) throws JSONException {
+        super(jsonObject);
+    }
 }
 ```
-**LLM Benefits:**
-- Natural language: "Find all orders containing product LAPTOP-001"
-- Object navigation: `product.listOrderItem[0].orderId`
-- The ORM layer automatically handles relationship queries
+**What This Enables:**
+- The relationship array `listOrderItem` is generated in the Java class
+- At runtime, JDX automatically populates this array when you access it after loading a Product entity
+- Field attributes like `orderid` are defined as VIRTUAL_ATTRIB in the `.revjdx` file and accessed through JDX's dynamic attribute system
+- JDX handles the relationship queries automatically
 
 ## 🚀 LLM MCP Tool Integration
 
 ### Object Model Summary
-The `getObjectModelSummary` tool provides LLMs with a complete overview of the generated object model:
-
-```json
-{
-  "entities": [
-    {
-      "name": "Supplier",
-      "fields": ["id", "name", "contactEmail", "rating"],
-      "relationships": ["listProduct"]
-    },
-    {
-      "name": "Product", 
-      "fields": ["id", "sku", "name", "price", "category"],
-      "relationships": ["listOrderItem"]
-    }
-  ],
-  "relationships": [
-    {
-      "from": "Supplier",
-      "to": "Product",
-      "type": "1:Many",
-      "navigation": "listProduct"
-    }
-  ]
-}
-```
+The `getObjectModelSummary` tool provides LLMs with a complete overview of the generated object model. This tool returns information about all entities, their fields (as defined in the `.revjdx` file), and their relationships (as defined by the generated relationship arrays in the Java classes).
 
 ### Natural Language Queries
 With reverse engineering, LLMs can perform complex operations using natural language:
@@ -187,11 +226,8 @@ WHERE s.name = 'TechSupply Inc'
 "Show me all products from TechSupply Inc"
 ```
 
-**Generated Java Code:**
-```java
-Supplier supplier = supplierService.findByName("TechSupply Inc");
-Product[] products = supplier.listProduct;
-```
+**What Reverse Engineering Actually Generates:**
+The reverse engineering process generates only the Java model classes with relationship arrays. The actual retrieval of entities and population of relationship arrays is handled by the JDX framework at runtime when you use JDX API methods. The generated `Supplier` class contains the `listProduct` relationship array, which JDX automatically populates when you access it after loading a Supplier entity.
 
 ## 🔧 Technical Implementation
 
@@ -199,68 +235,36 @@ Product[] products = supplier.listProduct;
 The reverse engineering process creates several configuration files:
 
 #### 1. **Database Configuration** (`ecommerce_template_postgres.config`)
-```properties
-JDX_DATABASE JDX:jdbc:postgresql://127.0.0.1:5432/ecommerce
-JDX_USER postgres
-JDX_PASSWORD <password>
-```
+The reverse engineering process creates a configuration file containing:
+- Database connection string with JDBC URL, credentials, database type, and debug level
+- JDBC driver specification
+- Object model package name
+- Superclass name (typically `JDX_JSONObject`)
+- Settings for accessor method generation and JSON mappings
 
 #### 2. **ORM Specification** (`.revjdx` files)
-The reverse engineering process generates JDX configuration files (`.revjdx`) that define the object model structure. These files use JDX-specific syntax to map database tables to Java classes and define relationships:
-
-```properties
-CLASS .Supplier TABLE supplier
-    VIRTUAL_ATTRIB id ATTRIB_TYPE int
-    VIRTUAL_ATTRIB name ATTRIB_TYPE java.lang.String
-    VIRTUAL_ATTRIB contactemail ATTRIB_TYPE java.lang.String
-    VIRTUAL_ATTRIB rating ATTRIB_TYPE java.math.BigDecimal
-    PRIMARY_KEY id 
-    RELATIONSHIP listProduct REFERENCES .ListProduct BYVALUE WITH id 
-;
-
-COLLECTION_CLASS .ListProduct COLLECTION_TYPE ARRAY ELEMENT_CLASS .Product ELEMENT_TABLE product
-    PRIMARY_KEY supplierid 
-;
-```
+The reverse engineering process generates JDX configuration files (`.revjdx`) that define the object model structure. These files contain:
+- **CLASS definitions**: Map each database table to a Java class with:
+  - `VIRTUAL_ATTRIB` entries for each column (with Java type mappings)
+  - `PRIMARY_KEY` specification
+  - `RELATIONSHIP` declarations linking to collection classes
+  - `SQLMAP` entries for nullable fields
+- **COLLECTION_CLASS definitions**: Define array-based collections for 1:Many relationships, specifying the element class, table, and foreign key
 
 #### 3. **Class Name Mapping** (`classnames_map_ecommerce.js`)
-```javascript
-{
-  "supplier": "Supplier",
-  "product": "Product", 
-  "customer": "Customer",
-  "address": "Address",
-  "customerorder": "CustomerOrder",
-  "orderitem": "OrderItem"
-}
-```
+The reverse engineering process generates a JavaScript JSON file that maps Java class names to their fully qualified package names (e.g., `"Supplier": "com.acme.ecommerce.model.Supplier"`).
 
 ### Generated Java Classes
 
-#### Entity Class Example
-The reverse engineering tool generates Java classes that extend `JDX_JSONObject` with relationship arrays and constructors:
+#### Entity Class Structure
+The reverse engineering tool generates Java classes with the following characteristics:
+- Each class extends `JDX_JSONObject` from the JDX framework
+- **Relationship arrays**: Public array fields for 1:Many relationships (e.g., `Product[] listProduct`)
+- **Constructors**: Default constructor and JSON-based constructor for deserialization
+- **Package structure**: Classes are placed in the package specified in the configuration
+- **Imports**: Required imports for `JSONObject`, `JSONException`, and `JDX_JSONObject`
 
-```java
-package com.acme.ecommerce.model;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.softwaretree.jdx.JDX_JSONObject;
-
-public class Supplier extends JDX_JSONObject {
-    public Product[] listProduct;  // Generated relationship array
-    
-    public Supplier() {
-        super();
-    }
-    
-    public Supplier(JSONObject jsonObject) throws JSONException {
-        super(jsonObject);
-    }
-}
-```
-
-**Note:** The actual field attributes (like `id`, `name`, `contactEmail`, `rating`) are defined in the `.revjdx` configuration file as `VIRTUAL_ATTRIB` entries. The JDX framework handles these attributes dynamically at runtime, so they don't appear as explicit fields in the generated Java class. The relationship arrays (like `listProduct`) are the primary generated code elements that enable object navigation.
+**Important Note:** The actual field attributes (like `id`, `name`, `contactemail`, `rating`) are defined in the `.revjdx` configuration file as `VIRTUAL_ATTRIB` entries using lowercase names matching the database column names. The JDX framework handles these attributes dynamically at runtime, so they don't appear as explicit fields in the generated Java class. The relationship arrays (like `listProduct`) are the primary generated code elements that enable object navigation.
 
 ## 🎯 Benefits for LLM Applications
 
@@ -292,10 +296,10 @@ public class Supplier extends JDX_JSONObject {
 ## 🔍 Debugging and Monitoring
 
 ### SQL Statement Logging
-To see the SQL statements generated by Gilhari/JDX, set `DEBUG_LEVEL=3` in your configuration:
+To see the SQL statements generated by Gilhari/JDX, set `DEBUG_LEVEL=3` (or higher) in the `JDX_DATABASE` line of your configuration file:
 
 ```properties
-JDX_DEBUG_LEVEL 3
+JDX_DATABASE JDX:jdbc:postgresql://127.0.0.1:5432/ecommerce;USER=postgres;PASSWORD=<password>;JDX_DBTYPE=POSTGRES;DEBUG_LEVEL=3
 ```
 
 This will log all SQL operations, showing how the ORM translates object operations into database queries.
@@ -334,10 +338,7 @@ curl -X GET "http://localhost:8081/gilhari/v1/getObjectModelSummary/now"
 ```
 
 ### 5. **Monitor SQL Generation**
-Enable debug logging to see how object operations translate to SQL:
-```properties
-JDX_DEBUG_LEVEL 3
-```
+Enable debug logging to see how object operations translate to SQL by setting `DEBUG_LEVEL=3` in the `JDX_DATABASE` configuration line.
 
 ## 🎉 Conclusion
 
