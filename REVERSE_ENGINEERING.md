@@ -271,8 +271,8 @@ public class Supplier extends JDX_JSONObject {
 
 ### 2. **Object-Oriented Thinking**
 - Data structures match how humans think about business
-- Relationships are explicit and navigable
-- Business logic can be expressed naturally
+- Relationships are explicit and navigable through relationship arrays
+- Object navigation replaces complex SQL JOINs
 
 ### 3. **Zero SQL Knowledge Required**
 - LLMs don't need to understand database internals
@@ -281,8 +281,8 @@ public class Supplier extends JDX_JSONObject {
 
 ### 4. **Automatic Relationship Management**
 - Foreign keys become object references
-- 1:Many relationships become arrays
-- Many:Many relationships become collection classes
+- 1:Many relationships become arrays (e.g., `Product[] listProduct`)
+- The ORM layer automatically handles relationship queries
 
 ### 5. **JSON Integration**
 - Built-in serialization/deserialization
