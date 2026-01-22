@@ -313,6 +313,21 @@ This microservice is designed to work seamlessly with the ORMCP Server for AI-po
 - **Ecommerce Microservice**: Running on `http://localhost:8081`
 - **Database**: PostgreSQL with complete e-commerce schema
 
+### Tunneling Options
+To expose your local ORMCP Server to the internet, you can use tunneling services:
+
+- **ngrok**: Popular tunneling service with free tier
+  - Install: `brew install ngrok` (macOS) or download from [ngrok.com](https://ngrok.com)
+  - Usage: `ngrok http 8080` (or your server port)
+  - Provides HTTPS URLs like `https://xxxxx.ngrok-free.app`
+
+- **Cloudflared**: Cloudflare's tunneling solution (free and open-source)
+  - Install: `brew install cloudflare/cloudflare/cloudflared` (macOS) or download from [developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation)
+  - Usage: `cloudflared tunnel --url http://localhost:8080`
+  - Provides HTTPS URLs with Cloudflare's infrastructure
+
+- **Other Options**: You can also use services like localtunnel, serveo, or similar tunneling solutions
+
 ### Key LLM Features
 - **Object Model Summary**: The `getObjectModelSummary` tool provides LLMs with complete entity and relationship information
 - **Natural Language Queries**: LLMs can perform complex operations without SQL knowledge
