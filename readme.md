@@ -26,6 +26,20 @@ The microservice provides RESTful APIs for six core e-commerce entities with sop
 
 The above model was automatically inferred from an existing database schema by the reverse-engineering tool shipped with the Gilhari SDK. Please see [REVERSE_ENGINEERING.md](REVERSE_ENGINEERING.md) to learn how you can easily work with an existing relational schema and use its data in an intuitive object-oriented way without writing any SQL code.
 
+### Post Reverse-Engineering Customization
+
+The reverse-engineered ORM specification gives us a jump-start, but it can be refined further for using a subset of curated attributes and relationships and for better comprehension and semantic correctness. In general, after reverse-engineering you are free to refine, change, massage, or drop any part of the specification. For example:
+
+- Giving a more meaningful attribute name for a column (e.g., `product_id` for the column name `pid`).
+- Naming convention for the (JSON) object classes and their attributes (camelCase or snake_case).
+- Semantic knowledge of the data type (e.g., Integer vs. BigDecimal).
+- Need for exposing or hiding certain column values in the Java (JSON) object (e.g., you may drop the `salary` attribute from an `Employee` class).
+- Rearranging the order of mapping specifications for classes and the order of attribute specifications within a class for better semantic understanding—e.g., mentioning more important things earlier.
+- Need for exposing only a curated domain model with a limited set of columns (attributes) and relationships for a particular application (e.g., the database table might have 20 columns but the application is concerned with only 7; some related records in other tables need not be included in the object graph) to reduce object complexity and data transfer overhead.
+- All of the above to make an AI agent (LLM) more effective and efficient in using an object model summary based on an ORM specification.
+
+Here is an example of a refined ORM specification that can work with the same E-commerce database schema and the existing data: [ecommerce_postgres_orm_example.jdx](sample_orm_specs/ecommerce_postgres_orm_example.jdx).
+
 ### 🎯 **Entity Descriptions:**
 
 - **Supplier**: Company information with contact details and ratings
@@ -48,6 +62,8 @@ gilhari_ecommerce/
 │   ├── ecommerce_template_postgres_docker.config.revjdx # Docker ORM spec
 │   ├── classnames_map_ecommerce.js        # Class name mappings
 │   └── postgresql-XX.X.X.jar             # PostgreSQL JDBC driver (download from official source)
+├── sample_orm_specs/                       # Example refined (declarative) ORM specifications
+│   └── ecommerce_postgres_orm_example.jdx # Curated ORM spec for same schema (see REVERSE_ENGINEERING.md)
 ├── database/                               # Database setup files
 │   ├── schema.sql                          # PostgreSQL schema definition
 │   └── sample_data.sql                     # Sample data for testing

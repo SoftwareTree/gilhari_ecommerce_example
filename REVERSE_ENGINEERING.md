@@ -193,6 +193,20 @@ The reverse engineering tool generates Java classes with the following character
 
 **Important Note:** The actual field attributes (like `id`, `name`, `contactemail`, `rating`) are defined in the `.revjdx` configuration file as `VIRTUAL_ATTRIB` entries using lowercase names matching the database column names. The JDX framework handles these attributes dynamically at runtime, so they don't appear as explicit fields in the generated Java class. The relationship arrays (like `listProduct`) are the primary generated code elements that enable object navigation.
 
+## Post Reverse-Engineering Customization
+
+In general, reverse-engineering is supposed to give you a jump-start to create the Java (container) classes and a default ORM specification starting with the chosen database tables. After that, you are free to refine, change, massage, or drop any part of the specification for better comprehension and semantic correctness. For example:
+
+- **Meaningful attribute names:** Give a more meaningful attribute name for a column (e.g., `product_id` for the column name `pid`).
+- **Naming conventions:** Apply a consistent naming convention for the (JSON) object classes and their attributes (camelCase or snake_case).
+- **Semantic data types:** Use semantic knowledge of the data type (e.g., Integer vs. BigDecimal) where it matters for the application.
+- **Exposing or hiding columns:** Choose which column values to expose in the Java (JSON) object—for example, you may drop the `salary` attribute from an `Employee` class for a given use case.
+- **Ordering for clarity:** Rearrange the order of mapping specifications for classes, and the order of attribute specifications within a class, for better semantic understanding—e.g., mention more important attributes or relationships earlier.
+- **Curated domain model:** Expose only a curated domain model with a limited set of columns (attributes) and relationships for a particular application. The database table might have 20 columns but the application may need only 7; some related records in other tables need not be included in the object graph. This reduces object complexity and data transfer overhead.
+- **All of the above** help make an AI agent (LLM) more effective and efficient when using an object model summary based on the ORM specification.
+
+Here is an example of a refined ORM specification that works with the same E-commerce database schema and existing data: [ecommerce_postgres_orm_example.jdx](sample_orm_specs/ecommerce_postgres_orm_example.jdx).
+
 ## 🎯 Benefits for LLM Applications
 
 ### 1. **Natural Language Processing**
