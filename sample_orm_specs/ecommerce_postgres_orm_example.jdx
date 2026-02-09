@@ -6,6 +6,7 @@ REM The object model and mappings are simplified using curated attributes and re
 JDX_DATABASE JDX:jdbc:postgresql://host.docker.internal:5432/ecommerce;USER=postgres;PASSWORD=postgres;JDX_DBTYPE=POSTGRES;DEBUG_LEVEL=5
 JDBC_DRIVER org.postgresql.Driver
 JDX_OBJECT_MODEL_PACKAGE com.acme.ecommerce.model
+OBJECT_MODEL_OVERVIEW This object model describes an ecommerce operation with entities like products, suppliers, customers, addresses, customer orders, and order items. Suppliers provide products to the catalog, customers can have multiple addresses and place orders containing multiple order items. Each order item links a product to a customer order with pricing and quantity information.
 ;
 
 CLASS .OrderItem TABLE orderitem
