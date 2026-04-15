@@ -2,6 +2,7 @@ Copyright (c) 2025 Software Tree
 
 # Gilhari E-commerce Microservice
 
+[![SafeSkill 92/100](https://img.shields.io/badge/SafeSkill-92%2F100_Verified%20Safe-brightgreen)](https://safeskill.dev/scan/softwaretree-gilhari-ecommerce-example)
 > **Automated e-commerce microservice with PostgreSQL integration and Docker deployment**
 
 This repository contains a complete e-commerce microservice built with Gilhari ORM, featuring **automatic environment detection** for seamless local development and Docker deployment. The system automatically handles database connectivity across different environments without manual configuration.
