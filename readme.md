@@ -60,7 +60,7 @@ gilhari_ecommerce/
 │   ├── ecommerce_template_postgres_docker.config      # Docker config
 │   ├── ecommerce_template_postgres.config.revjdx      # Local ORM spec
 │   ├── ecommerce_template_postgres_docker.config.revjdx # Docker ORM spec
-│   ├── classnames_map_ecommerce.js        # Class name mappings
+│   ├── classnames_map_ecommerce.json        # Class name mappings
 │   └── postgresql-XX.X.X.jar             # PostgreSQL JDBC driver (download from official source)
 ├── sample_orm_specs/                       # Example refined (declarative) ORM specifications
 │   └── ecommerce_postgres_orm_example.jdx # Curated ORM spec for same schema (see REVERSE_ENGINEERING.md)
@@ -401,7 +401,7 @@ com.acme.ecommerce.model/
 ### Configuration Files
 - **ORM Specifications**: `.revjdx` files with database mappings
 - **Service Config**: `gilhari_service.config` (JSON)
-- **Class Mapping**: `classnames_map_ecommerce.js`
+- **Class Mapping**: `classnames_map_ecommerce.json`
 
 ## 🔍 Database Schema
 
